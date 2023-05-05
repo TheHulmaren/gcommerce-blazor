@@ -1,24 +1,33 @@
 @inject IProductService ProductService
 
-<ul class="list-unstyled">
-    @foreach (var product in _products)
-    {
-        <li class="card my-3 w-25">
-            <div class="card-img-top mr-2">
-                <a href="#">
-                    <img class="card-img" src="@product.ImageUrl" alt="@product.Name"/>
-                </a>
-            </div>
-            <div class="card-body">
-                <a href="#">
-                    <h4 class="mb-0">@product.Name </h4>
-                </a>
-                <p>@product.Description</p>
-                <h5 class="price">$@product.Price</h5>
-            </div>
-        </li>
-    }
-</ul>
+@if (ProductService.Products.Count == 0)
+{
+    <p>
+        <em>Loading...!!</em>
+    </p>
+}
+else
+{
+    <ul class="list-unstyled">
+        @foreach (var product in ProductService.Products)
+        {
+            <li class="card my-3 w-25">
+                <div class="card-img-top mr-2">
+                    <a href="#">
+                        <img class="card-img" src="@product.ImageUrl" alt="@product.Name"/>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <a href="#">
+                        <h4 class="mb-0">@product.Name </h4>
+                    </a>
+                    <p>@product.Description</p>
+                    <h5 class="price">$@product.Price</h5>
+                </div>
+            </li>
+        }
+    </ul>
+}
 
 @code {
 
