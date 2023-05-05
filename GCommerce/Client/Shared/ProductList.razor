@@ -1,4 +1,4 @@
-@inject HttpClient Http
+@inject IProductService ProductService
 
 <ul class="list-unstyled">
     @foreach (var product in _products)
@@ -26,11 +26,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var fetchedProducts = await Http.GetFromJsonAsync<List<Product>>("api/Product");
-        _products = fetchedProducts ?? new List<Product>();
+        await ProductService.GetProducts();
     }
+
 }
 
 ;
-
 }
