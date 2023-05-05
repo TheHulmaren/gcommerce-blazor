@@ -7,17 +7,17 @@ namespace GCommerce.Server.Controllers;
 [ApiController]
 public class ProductController : ControllerBase
 {
-    private readonly DataContext _context;
+    private readonly IProductService _productService;
 
-    public ProductController(DataContext context)
+    public ProductController(IProductService productService)
     {
-        _context = context;
+        _productService = productService;
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Product>>> GetProducts()
+    public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProducts()
     {
-        var fetchedProducts = await _context.Products.ToListAsync();
-        return Ok(fetchedProducts);
+        var serviceResponse = await _productService.GetProductsAsync();
+        return Ok(serviceResponse);
     }
 }
