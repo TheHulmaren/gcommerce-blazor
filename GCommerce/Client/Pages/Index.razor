@@ -1,4 +1,42 @@
 ﻿@page "/"
+@page "/{categorySlug}"
+@inject ICategoryService CategoryService
+@inject IProductService ProductService
 
 <PageTitle>My Shop</PageTitle>
-<ProductList></ProductList>
+@if (_products.Count == 0)
+{
+    <p>
+        @_loadingIndicator
+    </p>
+}
+else
+{
+    <ProductList Products="_products"></ProductList>
+}
+
+@code{
+
+    [Parameter]
+    public string? CategorySlug { get; set; }
+
+    private List<Product> _products = new List<Product>();
+    private string _loadingIndicator = "Loading...";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var serviceResponse = CategorySlug == null ? await ProductService.GetProducts()
+            : await ProductService.GetProductsByCategorySlug(CategorySlug);
+
+        if (!serviceResponse.Success)
+        {
+            _loadingIndicator = $"Failed to load products\nMessage: {serviceResponse.Message}";
+        }
+        else
+        {
+    // serviceResponse.Data should never be null, but just in case
+            _products = serviceResponse.Data ?? new List<Product>();
+        }
+    }
+
+}
