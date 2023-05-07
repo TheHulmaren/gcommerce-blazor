@@ -1,0 +1,47 @@
+@page "/product/{id:int}"
+@using System.Net
+@inject IProductService ProductService
+
+@if (_product == null)
+{
+    <pre>
+        @_indicatorText
+    </pre>
+}
+else
+{
+    <div class="card w-50">
+        <div class="card-img-top">
+            <img src="@_product.ImageUrl" alt="@_product.Name" class="img-fluid"/>
+        </div>
+        <div class="card-body">
+            <h4 class="card-title">@_product.Name</h4>
+            <h5 class="card-subtitle">@_product.Price.ToString("C")</h5>
+            <p class="card-text">@_product.Description</p>
+        </div>
+    </div>
+}
+
+
+@code {
+    private Product? _product;
+    private string _indicatorText = "Loading...";
+
+    [Parameter]
+    public int Id { get; set; }
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var response = await ProductService.GetProductById(Id);
+        if (!response.Success)
+        {
+            _indicatorText = $"Error loading product with ID: {Id}\nError message: {response.Message}";
+        }
+        else
+        {
+            _product = response.Data;
+        }
+    }
+
+}
