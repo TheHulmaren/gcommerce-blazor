@@ -1,6 +1,10 @@
 global using GCommerce.Shared;
 global using GCommerce.Server.Data;
-global using GCommerce.Server.Services;
+global using GCommerce.Server.Services.ProductService;
+global using GCommerce.Server.Services.CategoryService;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.AspNetCore.Http.HttpResults;
+
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +22,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 
